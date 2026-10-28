@@ -1,0 +1,20 @@
+schema_version = "1.0.0"
+
+id = "dronegen"
+version = "0.8.0"
+name = "DroneGen"
+tagline = "Text to image to 3D mesh for drone show figures, local server"
+maintainer = "Tyan Stanislav"
+type = "add-on"
+tags = ["Mesh", "Import-Export"]
+
+blender_version_min = "4.2.0"
+
+license = ["SPDX:MIT"]
+
+[permissions]
+network = "Talks to the local DroneGen server over HTTP"
+files = "Saves generated images and meshes to its cache folder"
+
+[build]
+paths_exclude_pattern = ["__pycache__/", "*.pyc"]

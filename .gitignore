@@ -1,0 +1,33 @@
+# the whole install: venv, Python, uv, models (~28 GB), outputs, logs
+runtime/
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.venv/
+*.log
+
+# secrets
+.env
+.env.*
+secrets.json
+
+# local tool and editor settings
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+AGENTS.md
+.cursor/
+.cursorrules
+.aider*
+.continue/
+.copilot/
+.vscode/
+.idea/
+
+# OS files
+Thumbs.db
+desktop.ini
+.DS_Store

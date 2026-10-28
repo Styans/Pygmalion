@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dronegen-server"
+version = "0.1.0"
+description = "Local text-to-image and image-to-3D server for drone show figures"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+# The light profile: mock and silhouette backends, no PyTorch (works without a GPU).
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+    "python-multipart>=0.0.9",
+    "numpy>=2.3,<3",
+    "scipy>=1.16",
+    "pillow>=12.1",
+    "trimesh>=4.4",
+    "PyMCubes==0.1.6; python_version < '3.13'",
+    "scikit-image>=0.26",
+    "fast-simplification>=0.1.7",
+    "rembg>=2.0.85,<2.1",
+    "onnxruntime>=1.20",
+    "huggingface-hub>=1.31,<2",
+    "psutil>=5.9",
+    "httpx>=0.27",  # the local chat model (llama.cpp server)
+    "anthropic>=1.0,<2",  # the optional cloud chat model (Claude API); never used unless switched on
+    "opencv-python-headless>=4.10",  # Hunyuan3D image pre-processing
+]
+
+[project.optional-dependencies]
+# The full profile; PyTorch itself is installed first from the PyTorch index (CUDA build).
+gpu = [
+    "diffusers>=0.40,<0.41",
+    "transformers>=5.18,<6",
+    "accelerate>=1.15,<2",
+    "gguf>=0.10",
+    "safetensors>=0.8",
+    "omegaconf>=2.3,<2.4",
+    "einops>=0.7",
+    "imageio>=2.30",
+]
+test = ["pytest>=8", "httpx>=0.27"]
+
+[project.scripts]
+dronegen-server = "dronegen_server.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["dronegen_server*"]
+
+# not Python packages, but the server needs them at run time (a non-editable install must carry them)
+[tool.setuptools.package-data]
+dronegen_server = ["studio/*", "studio/vendor/*", "agents/knowledge/*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "gpu: needs CUDA, PyTorch and downloaded weights (run with -m gpu)",
+]
+addopts = "-m 'not gpu'"
